@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 #AC_PREREQ([2.69])
-AC_INIT(si-generic, 1.0, akshayprkt@gmail.com)
+AC_INIT(si-generic, 1.0, ramkumar_nekkalapudi@yahoo.com)
 AC_CONFIG_SRCDIR([si])
 
 AM_INIT_AUTOMAKE([foreign no-dist-gzip dist-bzip2 1.9])
