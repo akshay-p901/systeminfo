@@ -3,13 +3,17 @@
 static void systemInfo_Loop();
 
 #ifdef ENABLE_IARM
-static IARM_Result_t isSystemInfoAvailable(void *arg);
+static IARM_Result_t getCPUDetails(void *arg);
+static IARM_Result_t getNumberOfCPUCores(void *arg);
+static IARM_Result_t getCPUCoresDetails(void *arg);
 #endif // ifdef ENABLE_IARM
 
 int main(int argc, char *argv[])
 {
 #ifdef ENABLE_IARM
-    IARM_Bus_RegisterCall(IARM_BUS_SYSTEMINFO_API_isAvailable, isSystemInfoAvailable);
+    IARM_Bus_RegisterCall(IARM_BUS_SYSTEMINFO_API_getCPUDetails, getCPUDetails);
+    IARM_Bus_RegisterCall(IARM_BUS_SYSTEMINFO_API_getNumberOfCPUCores, getNumberOfCPUCores);
+    IARM_Bus_RegisterCall(IARM_BUS_SYSTEMINFO_API_getCPUCoresDetails, getCPUCoresDetails);
 #endif
 #ifdef ENABLE_SD_NOTIFY
     sd_notifyf(0, "READY=1\n"
@@ -30,6 +34,21 @@ IARM_Result_t isSystemInfoAvailable(void *arg)
     return IARM_RESULT_SUCCESS;
 }
 #endif // ENABLE_IARM
+
+#ifdef ENABLE_IARM
+    err = IARM_Bus_Init(IARM_BUS_SYS_INFO_NAME);
+    if(IARM_RESULT_SUCCESS != err)
+    {
+        //LOG("Error initializing IARM.. error code : %d\n",err);
+        return err;
+    }
+    err = IARM_Bus_Connect();
+    if(IARM_RESULT_SUCCESS != err)
+    {
+        //LOG("Error connecting to IARM.. error code : %d\n",err);
+        return err;
+    }
+#endif
 
 void systemInfo_Loop()
 {
