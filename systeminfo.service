@@ -1,16 +1,40 @@
-##########################################################################
-# Ram - Do we need to add any license here?
-##########################################################################
-[Unit]
-Description= System Info Daemon
-After= iarmbusd.service
-Requires=iarmbusd.service
+#ifndef _SYSTEMINFOIARM_H_
+#define _SYSTEMINFOIARM_H_
 
-[Service]
-EnvironmentFile=/etc/device.properties
-ExecStart=/usr/bin/systeminfo
-ExecStop=/bin/kill -15 $MAINPID
-Restart=always
+#include <stdio.h>
+#include <sys/types.h>
+#include <signal.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <malloc.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <glib.h>
 
-[Install]
-WantedBy=multi-user.target
+extern "C" {
+#include "cJSON.h"
+#ifdef ENABLE_SD_NOTIFY
+#include <systemd/sd-daemon.h>
+#endif
+}
+
+#ifdef ENABLE_IARM
+#include "irMgr.h"
+#include "comcastIrKeyCodes.h"
+#include "libIARM.h"
+#include "libIbus.h"
+#endif
+
+/**
+ * @addtogroup SYSTEMINFO_TYPES
+ * @{
+ */
+#define IARM_BUS_SYS_INFO_NAME "SYSTEM_INFO"
+
+#define IARM_BUS_SYSTEMINFO_API_getCPUDetails "getCPUDetails"
+#define IARM_BUS_SYSTEMINFO_API_getNumberOfCPUCores "getNumberOfCPUCores"
+#define IARM_BUS_SYSTEMINFO_API_getCPUCoresDetails "getCPUCoresDetails"
+
+#endif /* _SYSTEMINFOIARM_H_ */
